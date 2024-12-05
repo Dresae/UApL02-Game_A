@@ -69,3 +69,21 @@ class KBCGame:
         correct_answer = question["answer"]
         incorrect_options = [1, 2, 3, 4]
         incorrect_options.remove(correct_answer)
+
+        # Hide two incorrect options
+        hide_options = incorrect_options[:2]
+        for i in hide_options:
+            self.option_buttons[i - 1].config(text="", state="disabled")
+
+    def quit_game(self):
+        self.game_over(f"You chose to quit!\nTotal Money Won: {self.money}")
+
+    def game_over(self, message):
+        messagebox.showinfo("Game Over", message)
+        self.root.destroy()
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    game = KBCGame(root)
+    root.mainloop()
