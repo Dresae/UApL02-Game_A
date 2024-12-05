@@ -30,3 +30,42 @@ class KBCGame:
 
         self.quit_button = tk.Button(self.root, text="Quit", font=("Arial", 14), command=self.quit_game)
         self.quit_button.pack(side="right", padx=20)
+
+        # Money Label
+        self.money_label = tk.Label(self.root, text="Money: 0", font=("Arial", 14))
+        self.money_label.pack(pady=20)
+
+    def load_question(self):
+        if self.current_question >= len(QUESTIONS_DICT):
+            self.game_over("Congrats!! You answered all the questions correctly!!\nTotal Money Won: {}".format(self.money))
+            return
+
+        question = QUESTIONS_DICT[self.current_question]
+        self.question_label.config(text=f"Question {self.current_question + 1}: {question['name']}")
+        self.money_label.config(text=f"Money: {self.money}")
+
+        for i in range(4):
+            self.option_buttons[i].config(text=f"Option {i + 1}: {question['option' + str(i + 1)]}", state="normal")
+
+    def check_answer(self, selected_option):
+        question = QUESTIONS_DICT[self.current_question]
+        correct_answer = question["answer"]
+
+        if selected_option == correct_answer:
+            messagebox.showinfo("Correct!", "You answered correctly!")
+            self.money += question["money"]
+            self.current_question += 1
+            self.load_question()
+        else:
+            self.game_over(f"Incorrect! The correct answer was Option {correct_answer}.\nMoney Won: {self.money}")
+
+    def use_lifeline(self):
+        if self.lifeline_used:
+            messagebox.showwarning("Lifeline Used", "You have already used the lifeline!")
+            return
+
+        self.lifeline_used = True
+        question = QUESTIONS_DICT[self.current_question]
+        correct_answer = question["answer"]
+        incorrect_options = [1, 2, 3, 4]
+        incorrect_options.remove(correct_answer)
