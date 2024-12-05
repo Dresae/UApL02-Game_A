@@ -5,7 +5,7 @@ from questions import QUESTIONS_DICT
 class KBCGame:
     def __init__(self, root):
         self.root = root
-        self.root.title("Kaun Banega Crorepati")
+        self.root.title("Who wants to be a millionaire?")
         self.current_question = 0
         self.money = 0
         self.lifeline_used = False
